@@ -1,0 +1,38 @@
+% Import the required library
+import PRTelegramBot.Core.*
+
+% Define the exit command
+EXIT_COMMAND = 'exit';
+
+% Create a new PRBot instance
+telegram = PRBot();
+telegram.Token = '';
+telegram.ClearUpdatesOnStart = true;
+telegram.WhiteListUsers = [];
+telegram.Admins = [];
+telegram.BotId = 0;
+
+% Set up event handlers
+telegram.OnLogCommon = @Telegram_OnLogCommon;
+telegram.OnLogError = @Telegram_OnLogError;
+
+% Start the bot
+telegram.Start();
+
+% Define the event handlers
+function Telegram_OnLogError(ex, id)
+    fprintf(2, '%s:%s\n', datestr(now), ex.message);
+end
+
+function Telegram_OnLogCommon(msg, typeEvent, color)
+    fprintf(1, '%s:%s\n', datestr(now), msg);
+end
+
+% Main loop
+while true
+    result = input('', 's');
+    if strcmpi(result, EXIT_COMMAND)
+        exit(0);
+    end
+end
+
